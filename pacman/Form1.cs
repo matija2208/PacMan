@@ -27,7 +27,7 @@ namespace pacman
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            timer1.Start();
             height=this.Height;
             width=this.Width;
             Console.WriteLine(height + " " + width);
@@ -55,18 +55,31 @@ namespace pacman
             int yMove = (height - dim * maze.Length - 39)/2;
             Graphics g = this.CreateGraphics();
             g.FillRectangle(new SolidBrush(Color.Black), 0, 0, width, height);
-            Bitmap walltest = new Bitmap(Image.FromFile(@"C:/Users/matij/source/repos/pacman/pacman/images/test_wall.png"), new Size(dim, dim));
-            Console.WriteLine("CharDimmens: " + maze.Length + " x " + maze[0].Length+"\t"+dim);
-            for (int i=0; i < maze.Length; i++)
+            try
             {
-                for(int j=0; j < maze[i].Length; j++)
+                Bitmap walltest = new Bitmap(Image.FromFile(@"C:/Users/matij/source/repos/pacman/pacman/images/test_wall.png"), new Size(dim, dim));
+                Console.WriteLine("CharDimmens: " + maze.Length + " x " + maze[0].Length + "\t" + dim);
+                for (int i = 0; i < maze.Length; i++)
                 {
-                    if (maze[i][j]=='#')
+                    for (int j = 0; j < maze[i].Length; j++)
                     {
-                        g.DrawImage(walltest, j * dim + xMove, i * dim + yMove);
+                        if (maze[i][j] == '#')
+                        {
+                            g.DrawImage(walltest, j * dim + xMove, i * dim + yMove);
+                        }
                     }
                 }
             }
+            catch(Exception e)
+            {
+
+            }
+            
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Console.WriteLine(1);
         }
     }
 }
