@@ -9,30 +9,22 @@ namespace pacman
 
     internal class PacMan
     {
-        float x, y;
+        int x, y;
+        int px, py;
+        int lifes;
         float speed;
         Bitmap slika;
-
-        bool isLeft, isRight, isUp, isDown;
-
-        static int round(float a, bool c, bool d)
-        {
-            int b = (int)a;
-            if(c)
-                return (a > b) ? b + 1 : b;
-            else
-                return b;
-        }
+        int trenutni_smer = 0;
+        int sledeci_smer = 0;
+        // up    =1
+        // down  =2
+        // left  =3
+        // right =4
 
         public PacMan(String[] maze)
         {
-            isDown = false;
-            isLeft = false;
-            isRight = false;
-            isUp = false;
-
             speed = 0.1f;
-
+            lifes = 3;
             for(int i = 0; i < maze.Length; i++)
             {
                 for(int j = 0; j < maze[i].Length; j++)
@@ -41,52 +33,97 @@ namespace pacman
                     {
                         x = j;
                         y = i;
+                        px = x;
+                        py = y;
                     }
                 }
             }
             slika = new Bitmap(Image.FromFile("./images/pacman4.png"));
         }
+
+        public int pocetak(ref String[] maze)
+        {
+            StringBuilder[] sb = new StringBuilder[maze.Length];
+            for (int i = 0; i < maze.Length; i++)
+            {
+                sb[i] = new StringBuilder(maze[i]);
+            }
+
+            sb[y][x] = ' ';
+
+            for (int i = 0; i < maze.Length; i++)
+            {
+                maze[i] = sb[i].ToString();
+            }
+
+            x = px;
+            y = py;
+            lifes--;
+            if (lifes == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
         public void keyPress(KeyEventArgs e)
         {
-            if(isUp)
-            {
-                slika.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            }
-            else if(isDown)
-            {
-                slika.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            }
-            else if(isLeft)
-            {
-                slika.RotateFlip(RotateFlipType.Rotate180FlipNone);
-            }
-
-            isUp= false;
-            isDown= false;
-            isLeft= false;
-            isRight= false;
-
             if(e.KeyCode==Keys.Up)
             {
-                isUp = true;
-                slika.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                sledeci_smer = 1;
             }
             else if(e.KeyCode==Keys.Down)
             {
-                isDown = true;
-                slika.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                sledeci_smer = 2;
             }
             else if(e.KeyCode == Keys.Left)
             {
-                isLeft = true;
-                slika.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                sledeci_smer = 3;
             }
             else if(e.KeyCode==Keys.Right)
             {
-                isRight = true;
+                sledeci_smer = 4;
             }
         }
-        public void movePacMan(ref String[] maze)
+
+        bool provera(String[] maze, int x, int y)
+        {
+            try
+            {
+                if (maze[y][x] == ' ' || maze[y][x] == '*' || maze[y][x] == '&')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                return true;
+            }
+            
+        }
+
+        void revert_photo(int smer)
+        {
+            if (smer == 1)
+            {
+                slika.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            }
+            else if (smer == 2)
+            {
+                slika.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            }
+            else if (smer == 3)
+            {
+                slika.RotateFlip(RotateFlipType.Rotate180FlipNone);
+            }
+        }
+        public int movePacMan(ref String[] maze)
         {
             
             StringBuilder[] sb = new StringBuilder[maze.Length];
@@ -94,27 +131,92 @@ namespace pacman
             {
                 sb[i] = new StringBuilder(maze[i]);
             }
-            sb[PacMan.round(y,isUp,isDown)][round(x,isLeft,isRight)] = ' ';
-            if (isUp && (maze[round(y,isUp,isDown) - 1][round(x,isLeft,isRight)] == ' '|| maze[round(y,isUp,isDown) - 1][round(x,isLeft,isRight)] == '*' || maze[round(y,isUp,isDown) - 1][round(x,isLeft,isRight)] == '&'))
+            sb[y][x] = ' ';
+            
+            if(sledeci_smer != 0)
             {
-                y -= speed;
+                if (sledeci_smer == 1 && provera(maze, x, y - 1))
+                {
+                    revert_photo(trenutni_smer);
+                    trenutni_smer = 1;
+                    sledeci_smer = 0;
+                    slika.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                }
+                else if(sledeci_smer == 2 && provera(maze, x, y + 1))
+                {
+                    revert_photo(trenutni_smer);
+                    trenutni_smer = 2;
+                    sledeci_smer = 0;
+                    slika.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                }
+                else if(sledeci_smer == 3 && provera(maze, x - 1, y))
+                {
+                    revert_photo(trenutni_smer);
+                    trenutni_smer = 3;
+                    sledeci_smer = 0;
+                    slika.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                }
+                else if(sledeci_smer == 4 && provera(maze, x + 1, y))
+                {
+                    revert_photo(trenutni_smer);
+                    trenutni_smer = 4;
+                    sledeci_smer = 0;
+                }
             }
-            else if (isDown && (maze[round(y,isUp,isDown) + 1][round(x,isLeft,isRight)] == ' ' || maze[round(y,isUp,isDown) + 1][round(x,isLeft,isRight)] == '*' || maze[round(y,isUp,isDown) + 1][round(x,isLeft,isRight)] == '&'))
+            
+            if(trenutni_smer == 1 && provera(maze, x, y - 1))
             {
-                y += speed;
+                y--;
             }
-            else if (isLeft && (maze[round(y,isUp,isDown)][round(x,isLeft,isRight) - 1] == ' ' || maze[round(y,isUp,isDown)][round(x,isLeft,isRight) - 1] == '*' || maze[round(y,isUp,isDown)][round(x,isLeft,isRight) - 1] == '&'))
+            else if(trenutni_smer == 2 && provera(maze, x, y + 1))
             {
-                x -= speed;
+                y++;
             }
-            else if(isRight && (maze[round(y,isUp,isDown)][round(x,isLeft,isRight) + 1] == ' ' || maze[round(y,isUp,isDown)][round(x,isLeft,isRight) + 1] == '*' || maze[round(y,isUp,isDown)][round(x,isLeft,isRight) + 1] == '&'))
+            else if(trenutni_smer == 3 && provera(maze, x - 1, y))
             {
-                x += speed;
+                x--;
+                if(x == -1)
+                {
+                    x = maze[0].Length-1;
+                }
             }
-            sb[round(y,isUp,isDown)][round(x,isLeft,isRight)] = '@';
-            for (int i = 0; i < maze.Length; i++)
+            else if(trenutni_smer == 4 && provera(maze, x + 1, y))
             {
-                maze[i] = sb[i].ToString();
+                x++;
+                if(x == maze[0].Length)
+                {
+                    x = 0;
+                }
+            }
+            else
+            {
+                trenutni_smer = 0;
+            }
+            
+            sb[y][x] = '@';
+            if (maze[y][x] == '&')
+            {
+                for (int i = 0; i < maze.Length; i++)
+                {
+                    maze[i] = sb[i].ToString();
+                }
+                return 1;
+            }
+            else if(maze[y][x] == '*')
+            {
+                for (int i = 0; i < maze.Length; i++)
+                {
+                    maze[i] = sb[i].ToString();
+                }
+                return 2;
+            }
+            else
+            {
+                for (int i = 0; i < maze.Length; i++)
+                {
+                    maze[i] = sb[i].ToString();
+                }
+                return 0;
             }
         }
 
@@ -127,29 +229,83 @@ namespace pacman
             set
             {
                 slika = value;
-                if (isUp)
+                if (trenutni_smer == 1)
                 {
                     slika.RotateFlip(RotateFlipType.Rotate270FlipNone);
                 }
-                else if (isDown)
+                else if (trenutni_smer == 2)
                 {
                     slika.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 }
-                else if (isLeft)
+                else if (trenutni_smer == 3)
                 {
                     slika.RotateFlip(RotateFlipType.Rotate180FlipNone);
                 }
             }
         }
 
-        public float X
+        
+
+        public float Xcalc(int dim, int tick)
+        {
+            if(tick == 8 && trenutni_smer == 3)
+            {
+                return x * dim + dim;
+            }
+            else if (tick == 8 && trenutni_smer == 4)
+            {
+                return x * dim - dim;
+            }
+
+
+            if (trenutni_smer == 3)
+            {
+                return x * dim + (8.0f - tick) * (dim / 8.0f);
+            }
+            else if(trenutni_smer == 4)
+            {
+                return x * dim - (8.0f - tick) * (dim / 8.0f);
+            }
+            else
+            {
+                return x * dim;
+            }
+        }
+        
+        public float Ycalc(int dim, int tick)
+        {
+            if (tick == 8 && trenutni_smer == 1)
+            {
+                return y * dim + dim;
+            }
+            else if (tick == 8 && trenutni_smer == 2)
+            {
+                return y * dim - dim;
+            }
+
+
+            if (trenutni_smer == 1)
+            {
+                return y * dim + (8.0f - tick) * (dim / 8.0f);
+            }
+            else if (trenutni_smer == 2)
+            {
+                return y * dim - (8.0f - tick) * (dim / 8.0f);
+            }
+            else
+            {
+                return y * dim;
+            }
+        }
+
+        public int X
         {
             get
             {
                 return x;
             }
         }
-        public float Y
+        public int Y
         {
             get
             {
