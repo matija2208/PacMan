@@ -312,5 +312,12 @@ namespace pacman
                 return y;
             }
         }
+        public int Trenutni_smer
+        {
+            get
+            {
+                return trenutni_smer;
+            }
+        }
     }
 }

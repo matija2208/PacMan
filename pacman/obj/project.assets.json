@@ -8,23 +8,23 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\matij\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\matij\\source\\repos\\pacman\\pacman\\pacman.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\PacMan\\pacman\\pacman.csproj",
       "projectName": "pacman",
-      "projectPath": "C:\\Users\\matij\\source\\repos\\pacman\\pacman\\pacman.csproj",
-      "packagesPath": "C:\\Users\\matij\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\matij\\source\\repos\\pacman\\pacman\\obj\\",
+      "projectPath": "C:\\Users\\user\\Desktop\\PacMan\\pacman\\pacman.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\PacMan\\pacman\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\matij\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

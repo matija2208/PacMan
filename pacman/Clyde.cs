@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace pacman
 {
-    internal class Blinky : Ghost
+    internal class Clyde : Ghost
     {
-        public Blinky(String[] maze, String name):base(name,maze)
+        public Clyde(String[] maze, String name) : base(name, maze)
         {
 
         }
 
-        public override void algorithm(Point pacman_location,  int pacman_smer, String[] maze)
+        public override void algorithm(Point pacman_location, int pacman_smer, String[] maze)
         {
             StringBuilder[] sb = new StringBuilder[maze.Length];
             for (int i = 0; i < maze.Length; i++)
@@ -23,17 +23,24 @@ namespace pacman
 
             if (stanje == 0)
             {
-                target = pacman_location;
+                if(Math.Sqrt(Math.Pow(location.X - pacman_location.X, 2) + Math.Pow(location.Y - pacman_location.Y, 2)) <= 8)
+                {
+                    target = new Point(0, maze.Length);
+                }
+                else
+                {
+                    target = pacman_location;
+                }
             }
-            else if(stanje == 1)
+            else if (stanje == 1)
             {
-                target = new Point(maze[0].Length, 0);
+                target = new Point(0, maze.Length);
             }
-            else if(stanje == 2)
+            else if (stanje == 2)
             {
                 target = pocetna_lokacija;
             }
-            else if(stanje == 3)
+            else if (stanje == 3)
             {
                 Point[] sk = new Point[4];
                 sk[0] = new Point(location.X, location.Y - 1);
@@ -44,14 +51,14 @@ namespace pacman
 
                 Random rnd = new Random();
                 int test = rnd.Next(1, 5);
-                if (test != ((trenutni_smer % 2 == 0) ? trenutni_smer - 1 : trenutni_smer + 1) && provera(maze, sk[test-1].X, sk[test-1].Y))
+                if (test != ((trenutni_smer % 2 == 0) ? trenutni_smer - 1 : trenutni_smer + 1) && provera(maze, sk[test - 1].X, sk[test - 1].Y))
                 {
                     trenutni_smer = test;
                     if (prethodno_polje == '*' || prethodno_polje == '&')
                         sb[location.Y][location.X] = prethodno_polje;
                     else
                         sb[location.Y][location.X] = ' ';
-                    location = sk[test-1];
+                    location = sk[test - 1];
 
                     if (location.X == -1)
                         location.X = maze[0].Length - 1;
@@ -63,8 +70,8 @@ namespace pacman
                     goto end;
                 }
                 else
-                { 
-                    goto begin; 
+                {
+                    goto begin;
                 }
             }
             Point min;
@@ -81,12 +88,12 @@ namespace pacman
 
             for (int i = 1; i < 5; i++)
             {
-                if (i == ((trenutni_smer % 2 ==0)?trenutni_smer-1:trenutni_smer+1) || !provera(maze, s[i - 1].X, s[i - 1].Y))
+                if (i == ((trenutni_smer % 2 == 0) ? trenutni_smer - 1 : trenutni_smer + 1) || !provera(maze, s[i - 1].X, s[i - 1].Y))
                 {
                     continue;
                 }
 
-                if(minsmer == 5)
+                if (minsmer == 5)
                 {
                     min = s[i - 1];
                     minsmer = i;
@@ -103,7 +110,7 @@ namespace pacman
             if (minsmer != 5)
             {
                 trenutni_smer = minsmer;
-                if(prethodno_polje == '*' || prethodno_polje == '&')
+                if (prethodno_polje == '*' || prethodno_polje == '&')
                     sb[location.Y][location.X] = prethodno_polje;
                 else
                     sb[location.Y][location.X] = ' ';

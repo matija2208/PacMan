@@ -62,7 +62,7 @@ namespace pacman
             }
 
         }
-        public abstract void algorithm(Point pacman_location, String[] maze);
+        public abstract void algorithm(Point pacman_location, int pacman_smer, String[] maze);
 
         public Bitmap Slika
         {
