@@ -16,7 +16,8 @@ namespace pacman
         Blinky blink;
         Pinky pink;
         Clyde clyd;
-        
+        Inky ink;
+
         public Form1()
         {
             Load_From_File();
@@ -24,6 +25,7 @@ namespace pacman
             blink = new Blinky(maze, "blinky");
             pink = new Pinky(maze, "pinky");
             clyd = new Clyde(maze, "clyde");
+            ink = new Inky(maze, "inky");
             InitializeComponent();
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -122,6 +124,7 @@ namespace pacman
                 g.DrawImage(blink.Slika, blink.Xcalc(dim, tick) + xMove, blink.Ycalc(dim, tick) + yMove, dim, dim);
                 g.DrawImage(pink.Slika, pink.Xcalc(dim, tick) + xMove, pink.Ycalc(dim, tick) + yMove, dim, dim);
                 g.DrawImage(clyd.Slika, clyd.Xcalc(dim, tick) + xMove, clyd.Ycalc(dim, tick) + yMove, dim, dim);
+                g.DrawImage(ink.Slika, ink.Xcalc(dim, tick) + xMove, ink.Ycalc(dim, tick) + yMove, dim, dim);
 
                 g.FillRectangle(new SolidBrush(Color.Black), 0, 0, xMove, height);
                 g.FillRectangle(new SolidBrush(Color.Black), width - xMove, 0, xMove, height);
@@ -144,18 +147,20 @@ namespace pacman
         private void timer1_Tick(object sender, EventArgs e)
         {
             tick++;
-            if (tick == 9)
+            if (tick == 5)
             {
                 tick = 1;
             }
             p.Slika = new Bitmap(Image.FromFile("./Images/pacman" + ((tick%4)+1) + ".png"));
 
-            if (tick%8==0)
+            if (tick%4==0)
             {
                 int t = p.movePacMan(ref maze);
-                blink.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, maze);
-                pink.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, maze);
-                clyd.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, maze);
+                blink.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, blink.Location, maze);
+                pink.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, blink.Location, maze);
+                clyd.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, blink.Location, maze);
+                ink.algorithm(new Point(p.X, p.Y), p.Trenutni_smer, blink.Location, maze);
+
                 if(t == 1)
                 {
                     Random rnd = new Random();
@@ -163,10 +168,12 @@ namespace pacman
                     blink.Stanje = 3;
                     pink.Stanje = 3;
                     clyd.Stanje = 3;
+                    ink.Stanje = 3;
 
                     blink.odrediSliku();
                     pink.odrediSliku();
                     clyd.odrediSliku();
+                    ink.odrediSliku();
 
                     timer3.Start();
                 }
@@ -219,6 +226,22 @@ namespace pacman
                     }
                 }
 
+                if (new Point(p.X, p.Y) == ink.Location)
+                {
+                    if (ink.Stanje < 2)
+                    {
+                        if (p.pocetak(ref maze) == 1)
+                        {
+                            timer1.Stop();
+                        }
+                    }
+                    else if (ink.Stanje == 3)
+                    {
+                        ink.Stanje = 2;
+                        ink.odrediSliku();
+                    }
+                }
+
                 if (blink.provera_lokacije())
                 {
                     blink.Stanje = 0;
@@ -235,6 +258,12 @@ namespace pacman
                 {
                     clyd.Stanje = 0;
                     clyd.odrediSliku();
+                }
+
+                if (ink.provera_lokacije())
+                {
+                    ink.Stanje = 0;
+                    ink.odrediSliku();
                 }
             }
             
@@ -254,12 +283,14 @@ namespace pacman
                         blink.Stanje = 0;
                         pink.Stanje = 0;
                         clyd.Stanje = 0;
+                        ink.Stanje = 0;
                     }
                     else if(counter %2==1 && blink.Stanje==0)
                     {
                         blink.Stanje = 1;
                         pink.Stanje = 1;
                         clyd.Stanje = 1;
+                        ink.Stanje = 0;
                     }
                     counter++;
                     tick2 = 0;
@@ -272,6 +303,7 @@ namespace pacman
                     blink.Stanje = 0;
                     pink.Stanje = 0;
                     clyd.Stanje = 0;
+                    ink.Stanje = 0;
                 }
                 
                 timer2.Stop();
@@ -297,6 +329,11 @@ namespace pacman
                 {
                     clyd.Stanje = 0;
                     clyd.odrediSliku();
+                }
+                if (ink.Stanje == 3)
+                {
+                    ink.Stanje = 0;
+                    ink.odrediSliku();
                 }
 
                 timer3.Stop();

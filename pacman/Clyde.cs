@@ -13,7 +13,7 @@ namespace pacman
 
         }
 
-        public override void algorithm(Point pacman_location, int pacman_smer, String[] maze)
+        public override void algorithm(Point pacman_location, int pacman_smer, Point blinky_location, String[] maze)
         {
             StringBuilder[] sb = new StringBuilder[maze.Length];
             for (int i = 0; i < maze.Length; i++)

@@ -62,7 +62,7 @@ namespace pacman
             }
 
         }
-        public abstract void algorithm(Point pacman_location, int pacman_smer, String[] maze);
+        public abstract void algorithm(Point pacman_location, int pacman_smer, Point blinky_location, String[] maze);
 
         public Bitmap Slika
         {
@@ -97,11 +97,11 @@ namespace pacman
 
         public float Xcalc(int dim, int tick)
         {
-            if (tick == 8 && trenutni_smer == 3)
+            if (tick == 4 && trenutni_smer == 3)
             {
                 return location.X * dim + dim;
             }
-            else if (tick == 8 && trenutni_smer == 4)
+            else if (tick == 4 && trenutni_smer == 4)
             {
                 return location.X * dim - dim;
             }
@@ -109,11 +109,11 @@ namespace pacman
 
             if (trenutni_smer == 3)
             {
-                return location.X * dim + (8.0f - tick) * (dim / 8.0f);
+                return location.X * dim + (4.0f - tick) * (dim / 4.0f);
             }
             else if (trenutni_smer == 4)
             {
-                return location.X * dim - (8.0f - tick) * (dim / 8.0f);
+                return location.X * dim - (4.0f - tick) * (dim / 4.0f);
             }
             else
             {
@@ -123,11 +123,11 @@ namespace pacman
 
         public float Ycalc(int dim, int tick)
         {
-            if (tick == 8 && trenutni_smer == 1)
+            if (tick == 4 && trenutni_smer == 1)
             {
                 return location.Y * dim + dim;
             }
-            else if (tick == 8 && trenutni_smer == 2)
+            else if (tick == 4 && trenutni_smer == 2)
             {
                 return location.Y * dim - dim;
             }
@@ -135,11 +135,11 @@ namespace pacman
 
             if (trenutni_smer == 1)
             {
-                return location.Y * dim + (8.0f - tick) * (dim / 8.0f);
+                return location.Y * dim + (4.0f - tick) * (dim / 4.0f);
             }
             else if (trenutni_smer == 2)
             {
-                return location.Y * dim - (8.0f - tick) * (dim / 8.0f);
+                return location.Y * dim - (4.0f - tick) * (dim / 4.0f);
             }
             else
             {

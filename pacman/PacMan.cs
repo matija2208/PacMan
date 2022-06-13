@@ -248,11 +248,11 @@ namespace pacman
 
         public float Xcalc(int dim, int tick)
         {
-            if(tick == 8 && trenutni_smer == 3)
+            if(tick == 4 && trenutni_smer == 3)
             {
                 return x * dim + dim;
             }
-            else if (tick == 8 && trenutni_smer == 4)
+            else if (tick == 4 && trenutni_smer == 4)
             {
                 return x * dim - dim;
             }
@@ -260,11 +260,11 @@ namespace pacman
 
             if (trenutni_smer == 3)
             {
-                return x * dim + (8.0f - tick) * (dim / 8.0f);
+                return x * dim + (4.0f - tick) * (dim / 4.0f);
             }
             else if(trenutni_smer == 4)
             {
-                return x * dim - (8.0f - tick) * (dim / 8.0f);
+                return x * dim - (4.0f - tick) * (dim / 4.0f);
             }
             else
             {
@@ -274,11 +274,11 @@ namespace pacman
         
         public float Ycalc(int dim, int tick)
         {
-            if (tick == 8 && trenutni_smer == 1)
+            if (tick == 4 && trenutni_smer == 1)
             {
                 return y * dim + dim;
             }
-            else if (tick == 8 && trenutni_smer == 2)
+            else if (tick == 4 && trenutni_smer == 2)
             {
                 return y * dim - dim;
             }
@@ -286,11 +286,11 @@ namespace pacman
 
             if (trenutni_smer == 1)
             {
-                return y * dim + (8.0f - tick) * (dim / 8.0f);
+                return y * dim + (4.0f - tick) * (dim / 4.0f);
             }
             else if (trenutni_smer == 2)
             {
-                return y * dim - (8.0f - tick) * (dim / 8.0f);
+                return y * dim - (4.0f - tick) * (dim / 4.0f);
             }
             else
             {

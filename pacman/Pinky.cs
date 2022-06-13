@@ -13,7 +13,7 @@ namespace pacman
 
         }
 
-        public override void algorithm(Point pacman_location, int pacman_smer, String[] maze)
+        public override void algorithm(Point pacman_location, int pacman_smer, Point blinky_location, String[] maze)
         {
             StringBuilder[] sb = new StringBuilder[maze.Length];
             for (int i = 0; i < maze.Length; i++)
@@ -25,8 +25,8 @@ namespace pacman
             {
                 if(pacman_smer == 1)
                 {
-                    target.X = pacman_location.X + 3;
-                    target.Y = pacman_location.Y + 4;
+                    target.X = pacman_location.X - 4;
+                    target.Y = pacman_location.Y - 4;
                 }
                 else if (pacman_smer == 2)
                 {
