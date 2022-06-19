@@ -12,7 +12,6 @@ namespace pacman
         int x, y;
         int px, py;
         int lifes;
-        float speed;
         Bitmap slika;
         int trenutni_smer = 0;
         int sledeci_smer = 0;
@@ -23,7 +22,6 @@ namespace pacman
 
         public PacMan(String[] maze)
         {
-            speed = 0.1f;
             lifes = 3;
             for(int i = 0; i < maze.Length; i++)
             {
@@ -318,6 +316,10 @@ namespace pacman
             {
                 return trenutni_smer;
             }
+        }
+        public int Lifes
+        {
+            get { return lifes; }
         }
     }
 }
